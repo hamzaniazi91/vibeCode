@@ -126,7 +126,6 @@ const workflowSections = [
 function useSectionProgressValues(numSections: number) {
   const { scrollYProgress } = useScroll();
   
-  
   // Create all transforms at once, at the top level
   const section1Progress = useTransform(
     scrollYProgress,
@@ -194,9 +193,9 @@ export default function LandingPage() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] relative">
+    <div className="min-h-screen bg-white relative">
       {/* Enhanced Sticky Navigation */}
-      <nav className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-darker/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700">
+      <nav className="sticky top-0 z-50 bg-white/95 border-b border-slate-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4 overflow-x-auto hide-scrollbar">
             {workflowSections.map((section, index) => (
@@ -214,8 +213,8 @@ export default function LandingPage() {
                   <span 
                     className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 transition-all duration-300
                       ${activeSection === section.id 
-                      ? 'bg-primary dark:bg-primary-light text-white' 
-                      : 'bg-primary/10 dark:bg-primary-light/10 text-primary dark:text-primary-light group-hover:bg-primary/20 dark:group-hover:bg-primary-light/20'}`}
+                      ? 'bg-primary text-white' 
+                      : 'bg-primary/10 group-hover:bg-primary/20'}`}
                   >
                     {index + 1}
                   </span>
@@ -223,8 +222,8 @@ export default function LandingPage() {
                 <span 
                   className={`text-sm font-medium transition-colors duration-300 hidden md:block whitespace-nowrap
                     ${activeSection === section.id 
-                    ? 'text-primary dark:text-primary-light' 
-                    : 'text-slate-600 dark:text-slate-300 group-hover:text-primary dark:group-hover:text-primary-light'}`}
+                    ? 'text-primary' 
+                    : 'text-slate-600 group-hover:text-primary'}`}
                 >
                   {section.title}
                 </span>
@@ -242,11 +241,11 @@ export default function LandingPage() {
           <div className="relative pt-20 pb-16 sm:pb-24">
             {/* Header Content */}
             <div className="text-center">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900">
                 <span className="block">Modern Rental Property Management</span>
-                <span className="block text-primary dark:text-primary-light">For Landlords & Property Managers</span>
+                <span className="block text-primary">For Landlords & Property Managers</span>
               </h1>
-              <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300">
+              <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-600">
                 Manage your rental properties from listings to lease agreements in one platform.
               </p>
               
@@ -262,7 +261,7 @@ export default function LandingPage() {
                 </motion.button>
                 <button 
                   onClick={() => router.push('/dashboard')} 
-                  className="px-8 py-3 bg-white dark:bg-neutral-dark hover:bg-slate-50 dark:hover:bg-neutral-darker text-primary dark:text-primary-light border-2 border-primary dark:border-primary-light rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  className="px-8 py-3 bg-white text-primary border-2 border-primary rounded-lg shadow-lg hover:bg-slate-50 transition-all"
                 >
                   Start Free Trial
                 </button>
@@ -273,8 +272,8 @@ export default function LandingPage() {
             <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Code Preview */}
               <div className="relative">
-                <pre className="relative rounded-xl bg-slate-900 p-8 shadow-2xl">
-                  <code className="text-sm sm:text-base text-slate-100">
+                <pre className="relative rounded-xl bg-white p-8 shadow-2xl border border-slate-100">
+                  <code className="text-sm sm:text-base text-slate-900">
       
                     <TypewriterEffect text={`// Manage Your Rentals
 import { Property, Tenant } from 'rental-platform';
@@ -297,14 +296,14 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
                   <motion.div
                     key={step.title}
                     initial={{ opacity: 1, y: 0 }}
-                    className="relative p-4 bg-white/5 dark:bg-neutral-dark border border-slate-200 dark:border-slate-700/50 backdrop-blur-sm rounded-xl shadow-lg hover:border-primary/50 dark:hover:border-primary/50 transition-colors"
+                    className="relative p-4 bg-white border border-slate-200 backdrop-blur-sm rounded-xl shadow-lg hover:border-primary/50 transition-colors"
                   >
-                    <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-primary dark:bg-primary-light text-white rounded-full flex items-center justify-center font-semibold">
+                    <div className="absolute -left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-primary text-white rounded-full flex items-center justify-center font-semibold">
                       {index + 1}
                     </div>
                     <div className="ml-8">
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{step.title}</h3>
-                      <p className="text-sm text-slate-600 dark:text-slate-300">{step.description}</p>
+                      <h3 className="font-semibold text-slate-900">{step.title}</h3>
+                      <p className="text-sm text-slate-600">{step.description}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -328,10 +327,10 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Section header */}
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
+              <h2 className="text-3xl font-bold text-slate-900">
                 {section.title}
               </h2>
-              <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+              <p className="mt-4 text-lg text-slate-600">
                 {section.description}
               </p>
             </div>
@@ -345,12 +344,12 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10"
+                    className="bg-white/90 backdrop-blur-sm rounded-xl p-6 border border-slate-100"
                   >
                     <div className="text-3xl font-bold text-primary mb-2">
                       {metric.value}
                     </div>
-                    <div className="text-sm text-slate-500 dark:text-slate-400">
+                    <div className="text-sm text-slate-500">
                       {metric.label}
                     </div>
                   </motion.div>
@@ -370,18 +369,18 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
         whileInView={{ opacity: 1 }}
         className="relative py-20"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-light/10 to-accent-light/10" />
+        <div className="absolute inset-0 bg-gradient-to-br from-white/80 to-slate-100" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative bg-white dark:bg-neutral-dark rounded-xl shadow-xl p-12 border border-slate-200 dark:border-slate-700">
+          <div className="relative bg-white rounded-xl shadow-xl p-12 border border-slate-200">
             <div className="text-center">
               <motion.h2 
                 initial={{ y: 20 }}
                 whileInView={{ y: 0 }}
-                className="text-3xl font-bold text-slate-900 dark:text-white"
+                className="text-3xl font-bold text-slate-900"
               >
                 Ready to Get Started?
               </motion.h2>
-              <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
+              <p className="mt-4 text-lg text-slate-600">
                 Start using our product today
               </p>
               
@@ -398,7 +397,7 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/dashboard')}
-                  className="px-8 py-3 bg-white dark:bg-neutral-dark hover:bg-slate-50 dark:hover:bg-neutral-darker text-primary dark:text-primary-light border-2 border-primary dark:border-primary-light rounded-lg shadow-lg hover:shadow-xl transition-all"
+                  className="px-8 py-3 bg-white text-primary border-2 border-primary rounded-lg shadow-lg hover:bg-slate-50 transition-all"
                 >
                   Start Free Trial
                 </motion.button>
