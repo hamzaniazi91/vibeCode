@@ -6,6 +6,10 @@ import { PricingSection } from '@/components/PricingSection';
 // import { MetricCard } from '@/components/MetricCard';
 import { TypewriterEffect } from '@/components/TypewriterEffect';
 import { FaMobile, FaLaptop, FaCode } from 'react-icons/fa6';
+import { useTrialStatus } from '@/hooks/useTrialStatus';
+import  HouseScene  from '@/components/HouseScene';
+
+
 import { 
   Lock, CreditCard, Moon
 } from 'lucide-react';
@@ -15,6 +19,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Link as ScrollLink } from 'react-scroll';
 import { VideoModal } from '@/components/VideoModal';
+
 import { FaReddit } from 'react-icons/fa';
 import { 
   FaGithub, 
@@ -24,7 +29,11 @@ import {
   FaHackerNews,
   FaInstagram,
   FaTiktok,
-  FaYoutube
+  FaYoutube,
+  FaBuilding,
+  FaUserCheck,
+  FaDollarSign,
+  
 } from 'react-icons/fa6';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -118,6 +127,7 @@ const workflowSections = [
 function useSectionProgressValues(numSections: number) {
   const { scrollYProgress } = useScroll();
   
+  
   // Create all transforms at once, at the top level
   const section1Progress = useTransform(
     scrollYProgress,
@@ -160,7 +170,7 @@ const featureCards = [
   {
     title: "Rent Reminders",
     description: "Automated payment reminders and late fee tracking",
-    icon: <FaCurrencyDollar className="h-6 w-6 text-primary" />,
+    icon: <FaDollarSign className="h-6 w-6 text-primary" />,
     bgGradient: "from-orange-500/10 to-red-500/10"
   }
 ];
@@ -169,6 +179,8 @@ export default function LandingPage() {
   const { user } = useAuth();
   const { isInTrial } = useTrialStatus();
   const [activeSection, setActiveSection] = useState("overview");
+  const [hovered, setHovered] = useState<boolean>(false);
+
   const sectionProgressValues = useSectionProgressValues(workflowSections.length);
   
   const router = useRouter();
@@ -264,6 +276,7 @@ export default function LandingPage() {
               <div className="relative">
                 <pre className="relative rounded-xl bg-slate-900 p-8 shadow-2xl">
                   <code className="text-sm sm:text-base text-slate-100">
+      
                     <TypewriterEffect text={`// Manage Your Rentals
 import { Property, Tenant } from 'rental-platform';
 
@@ -307,7 +320,7 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
         <motion.section
           key={section.id}
           id={section.id}
-          className={`py-20 ${section.bgColor}`}
+          className="py-20"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-20%" }}
