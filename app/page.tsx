@@ -2,10 +2,19 @@
 
 import { useAuth } from '@/contexts/AuthContext';
 import { PricingSection } from '@/components/PricingSection';
-import { useTrialStatus } from '@/hooks/useTrialStatus';
 // import { DemoWidget } from '@/components/DemoWidget';
 // import { MetricCard } from '@/components/MetricCard';
 import { TypewriterEffect } from '@/components/TypewriterEffect';
+import { FaMobile, FaLaptop, FaCode } from 'react-icons/fa6';
+import { 
+  Lock, CreditCard, Moon
+} from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Link as ScrollLink } from 'react-scroll';
+import { VideoModal } from '@/components/VideoModal';
 import { FaReddit } from 'react-icons/fa';
 import { 
   FaGithub, 
@@ -17,53 +26,38 @@ import {
   FaTiktok,
   FaYoutube
 } from 'react-icons/fa6';
-import { 
- Lock, CreditCard, Moon
-} from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Link as ScrollLink } from 'react-scroll';
-import { VideoModal } from '@/components/VideoModal';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 // Update workflowSteps to be more generic
 const workflowSteps = [
   {
-    title: "Step One",
-    description: "First step of your workflow",
-    preview: <TypewriterEffect text="Processing step one..." />
+    title: "List Properties",
+    description: "Create and manage rental listings effortlessly",
+    preview: <TypewriterEffect text="Updating property details..." />
   },
   {
-    title: "Step Two",
-    description: "Second step of your workflow",
-    preview: <TypewriterEffect text="Executing step two..." />
+    title: "Tenant Management",
+    description: "Screen and communicate with tenants",
+    preview: <TypewriterEffect text="Sending lease agreements..." />
   },
   {
-    title: "Step Three",
-    description: "Third step of your workflow",
-    preview: <TypewriterEffect text="Running step three..." />
+    title: "Payment Processing",
+    description: "Automate rent collection and invoices",
+    preview: <TypewriterEffect text="Processing payments..." />
   },
   {
-    title: "Step Four",
-    description: "Fourth step of your workflow",
-    preview: <TypewriterEffect text="Completing step four..." />
+    title: "Report Generation",
+    description: "Generate occupancy and financial reports",
+    preview: <TypewriterEffect text="Creating monthly reports..." />
   }
 ];
 
 // Update platforms to be generic
 const platforms = [
-  { name: 'Platform 1', icon: FaGithub },
-  { name: 'Platform 2', icon: FaDiscord },
-  { name: 'Platform 3', icon: FaReddit },
-  { name: 'Platform 4', icon: FaProductHunt },
-  { name: 'Platform 5', icon: FaXTwitter },
-  { name: 'Platform 6', icon: FaHackerNews },
-  { name: 'Platform 7', icon: FaInstagram },
-  { name: 'Platform 8', icon: FaTiktok },
-  { name: 'Platform 9', icon: FaYoutube }
+  { name: 'Mobile App', icon: FaMobile },
+  { name: 'Web Dashboard', icon: FaLaptop },
+  { name: 'API Integration', icon: FaCode }
 ];
 
 // Update workflowSections to be generic
@@ -71,58 +65,52 @@ const workflowSections = [
   {
     id: "overview",
     title: "Overview",
-    description: "Everything you need to build modern SaaS applications",
-    bgColor: "bg-white dark:bg-[#0B1120]"
+    description: "Streamline your rental property management"
   },
   {
-    id: "authentication",
-    title: "Authentication",
-    description: "Secure user authentication with multiple providers",
-    bgColor: "bg-slate-50 dark:bg-[#0B1120]",
+    id: "listings",
+    title: "Property Listings",
+    description: "Create and manage rental listings with photos & details",
     metrics: [
-      { label: "Auth Providers", value: "5+" },
-      { label: "Setup Time", value: "2min" },
-      { label: "Security", value: "A+" }
+      { label: "Property Listings", value: "Unlimited" },
+      { label: "Photo Uploads", value: "50+" },
+      { label: "Map Integration", value: "Google Maps" }
+    ]
+  },
+  {
+    id: "tenants",
+    title: "Tenant Management",
+    description: "Screen applicants and manage lease agreements",
+    metrics: [
+      { label: "Tenant Profiles", value: "Unlimited" },
+      { label: "Lease Templates", value: "10+" },
+      { label: "Communication Hub", value: "Built-in" }
     ]
   },
   {
     id: "payments",
-    title: "Payments",
-    description: "Seamless payment integration with Stripe",
-    bgColor: "bg-white dark:bg-[#0B1120]",
+    title: "Payment Processing",
+    description: "Automate rent collection and financial tracking",
     metrics: [
-      { label: "Integration", value: "1-Click" },
-      { label: "Providers", value: "Stripe" },
-      { label: "Setup Time", value: "5min" }
+      { label: "Payment Methods", value: "Credit Card/Bank Transfer" },
+      { label: "Late Fees", value: "Automated" },
+      { label: "Tax Reports", value: "Year-End Ready" }
     ]
   },
   {
-    id: "database",
-    title: "Database",
-    description: "Powerful database with Supabase integration",
-    bgColor: "bg-slate-50 dark:bg-[#0B1120]",
+    id: "maintenance",
+    title: "Maintenance Requests",
+    description: "Track repairs and maintenance tasks",
     metrics: [
-      { label: "Database", value: "PostgreSQL" },
-      { label: "Real-time", value: "Yes" },
-      { label: "Security", value: "RLS" }
-    ]
-  },
-  {
-    id: "features",
-    title: "Features",
-    description: "Additional features to enhance your application",
-    bgColor: "bg-white dark:bg-[#0B1120]",
-    metrics: [
-      { label: "Dark Mode", value: "Built-in" },
-      { label: "Components", value: "50+" },
-      { label: "TypeScript", value: "100%" }
+      { label: "Work Orders", value: "Unlimited" },
+      { label: "Vendor Management", value: "Integrated" },
+      { label: "Priority Levels", value: "3-Tier System" }
     ]
   },
   {
     id: "pricing",
     title: "Pricing",
-    description: "Simple, transparent pricing for your needs",
-    bgColor: "bg-slate-50 dark:bg-[#0B1120]"
+    description: "Plans for small to enterprise landlords"
   }
 ];
 
@@ -158,21 +146,21 @@ function useSectionProgressValues(numSections: number) {
 // Feature cards data
 const featureCards = [
   {
-    title: "Authentication",
-    description: "Supabase auth with social providers",
-    icon: <Lock className="h-6 w-6 text-primary" />,
+    title: "Property Listings",
+    description: "Create professional listings with photos and virtual tours",
+    icon: <FaBuilding className="h-6 w-6 text-primary" />,
     bgGradient: "from-blue-500/10 to-purple-500/10"
   },
   {
-    title: "Payments",
-    description: "Stripe subscription management",
-    icon: <CreditCard className="h-6 w-6 text-primary" />,
+    title: "Tenant Screening",
+    description: "Automated background checks and credit reports",
+    icon: <FaUserCheck className="h-6 w-6 text-primary" />,
     bgGradient: "from-green-500/10 to-emerald-500/10"
   },
   {
-    title: "Dark Mode",
-    description: "Built-in theme management",
-    icon: <Moon className="h-6 w-6 text-primary" />,
+    title: "Rent Reminders",
+    description: "Automated payment reminders and late fee tracking",
+    icon: <FaCurrencyDollar className="h-6 w-6 text-primary" />,
     bgGradient: "from-orange-500/10 to-red-500/10"
   }
 ];
@@ -244,11 +232,11 @@ export default function LandingPage() {
             {/* Header Content */}
             <div className="text-center">
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white">
-                <span className="block">Next.js + Stripe + Supabase</span>
-                <span className="block text-primary dark:text-primary-light">Production-Ready Template</span>
+                <span className="block">Modern Rental Property Management</span>
+                <span className="block text-primary dark:text-primary-light">For Landlords & Property Managers</span>
               </h1>
               <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300">
-                Start building with authentication and payments in minutes.
+                Manage your rental properties from listings to lease agreements in one platform.
               </p>
               
               {/* CTA Buttons */}
@@ -276,21 +264,17 @@ export default function LandingPage() {
               <div className="relative">
                 <pre className="relative rounded-xl bg-slate-900 p-8 shadow-2xl">
                   <code className="text-sm sm:text-base text-slate-100">
-                    <TypewriterEffect text={`// 🚀 The Ultimate Dev Setup
-import { useCoffee, useCode } from '@/hooks/dev';
+                    <TypewriterEffect text={`// Manage Your Rentals
+import { Property, Tenant } from 'rental-platform';
 
-export const DevLife = () => {
-  const { coffee } = useCoffee();
-  const { bugs } = useCode();
-  
-  return (
-    <div className="dev-life">
-      <Status>
-        {coffee ? '⚡️ Coding Mode' : '😴 Need Coffee'}
-        {bugs === 0 ? '🎉 No Bugs!' : '🐛 Debug Time'}
-      </Status>
-    </div>
-  );`} />
+const myProperty = new Property({
+  address: "123 Main St",
+  rent: "$2500/month",
+  tenants: [new Tenant({ name: "John Doe" })]
+});
+
+myProperty.generateLeaseAgreement(); // Auto-generates PDF
+`} />
                   </code>
                 </pre>
               </div>
@@ -415,9 +399,8 @@ export const DevLife = () => {
       <VideoModal
         isOpen={isVideoModalOpen}
         onClose={() => setIsVideoModalOpen(false)}
-        videoId="S1cnQG0-LP4"
+        videoId="rental-management-demo-video-id" // Replace with actual ID
       />
     </div>
   );
 }
-
