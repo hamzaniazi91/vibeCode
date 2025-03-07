@@ -9,7 +9,6 @@ import { FaMobile, FaLaptop, FaCode } from 'react-icons/fa6';
 import { useTrialStatus } from '@/hooks/useTrialStatus';
 import  HouseScene  from '@/components/HouseScene';
 
-
 import { 
   Lock, CreditCard, Moon
 } from 'lucide-react';
