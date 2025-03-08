@@ -1,0 +1,37 @@
+# Vibe Project Rules
+
+## Core Patterns
+- Use Next.js for routing and server-side rendering
+- Supabase as primary database and API layer
+- Twilio API integration for WhatsApp chatbot
+- Stripe integration for payment processing
+- React components for UI with Tailwind CSS
+- Context API for global state management
+
+## Key Decisions
+- Authentication via NextAuth.js
+- Property management through Supabase integration
+- Secure API key storage in environment variables
+- Performance optimization for API calls and chatbot interactions
+- Scalability considerations for managed services
+
+## User Preferences
+- Clear separation of concerns between frontend and backend
+- Reusable React components
+- Efficient state management through hooks and context
+- Secure handling of sensitive data
+- Regular updates to dependencies
+
+## Known Challenges
+- Ensuring secure API key management
+- Optimizing chatbot performance for high traffic
+- Seamless integration with property management systems
+- Secure payment processing flow
+- Maintaining consistent user experience across platforms
+
+## Learning Points
+- Importance of thorough documentation
+- Value of modular component architecture
+- Need for rigorous security practices
+- Benefits of managed services for scalability
+- Importance of performance optimization

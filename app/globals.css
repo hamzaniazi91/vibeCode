@@ -44,3 +44,49 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.sun {
+  animation: diurnal_motion 5s alternate infinite;
+}
+
+#background-house * {
+  animation: night_house 5s alternate infinite;
+}
+
+#windows * {
+  animation: lights 5s alternate infinite;
+}
+
+
+@keyframes diurnal_motion {
+  0% {
+    fill: #ffec00;
+    transform-origin: 50% 100%;
+  }
+   100% {
+    fill: #F27E63;
+    transform: rotate(120deg);
+    transform-origin: 50% 100%;
+  }
+}
+
+@keyframes night_house { 
+  0% {
+    fill: white;
+    opacity: 0;
+  }
+  100% {
+    fill: #0B9ED9;
+    opacity: 0.7;
+  }
+}
+
+@keyframes lights {
+   50% {
+      fill: #D8E6E6;
+   }
+   100% {
+     fill: #FFE45D;
+     opacity: 0.7;
+   }
+}

@@ -2,6 +2,7 @@
 
 // import { useWebSocket } from '@/contexts/WebSocketContext';
 import { useEffect, useState } from 'react';
+import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { supabase } from '@/utils/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -94,6 +95,14 @@ export default function Dashboard() {
   const { subscription, isLoading: isSubLoading, fetchSubscription } = useSubscription();
   const [hasCheckedSubscription, setHasCheckedSubscription] = useState(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+  interface PropertyData {
+    id: string;
+    title: string;
+    description: string;
+  }
+
+  const [recentProperties, setRecentProperties] = useState<PropertyData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const { isInTrial, isLoading: isTrialLoading } = useTrialStatus();
   const [authTimeout, setAuthTimeout] = useState(false);
 
@@ -190,6 +199,44 @@ export default function Dashboard() {
   //     router.push('/onboarding');
   //   }
   // }, [hasCompletedOnboarding, router]);
+
+  // Fetch recent properties
+  const fetchRecentProperties = async () => {
+    try {
+      
+      // Get recent properties, ordered by created_at
+      const { data: propertiesData, error } = await supabase
+        .from('properties')
+        .select('id, title, description')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (error) throw error;
+      
+      if (!propertiesData || propertiesData.length === 0) {
+        setRecentProperties([]);
+      } else {
+        const validProperties = propertiesData.filter((property: any) => {
+          return (
+            property.id &&
+            property.title &&
+            // property.price !== null &&
+            property.description !== null 
+          );
+        }) as PropertyData[];
+
+        setRecentProperties(validProperties);
+      }
+    } catch (error) {
+      console.error('Error fetching properties:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRecentProperties();
+  }, []);
 
   // Update the loading check
   if (!user && (isAuthLoading || isTrialLoading) && !hasCheckedSubscription) {
@@ -306,6 +353,57 @@ export default function Dashboard() {
               ))}
             </div>
           </div>
+
+          {/* Recent Properties */}
+          <div className="bg-white dark:bg-neutral-dark rounded-xl p-6 shadow-sm border border-slate-200 dark:border-slate-700">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-6">
+              Recent Properties
+            </h3>
+            {isLoading ? (
+              <div className="flex items-center justify-center p-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
+              </div>
+            ) : recentProperties.length === 0 ? (
+              <p className="text-slate-500 dark:text-slate-400 p-4">
+                No properties found
+              </p>
+            ) : (
+              <div className="space-y-4">
+                {recentProperties.map((property) => (
+                  <motion.div
+                    key={property.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className="flex items-center space-x-3 text-sm"
+                  >
+                    <div className="p-2 bg-primary/10 dark:bg-primary-light/10 rounded-lg">
+                      <PlusCircle className="h-4 w-4" />
+                    </div>
+                    <div>
+                      <p className="text-slate-900 dark:text-white font-medium">
+                        {property.title}
+                      </p>
+                      <div className="flex items-center space-x-2 text-xs">
+                        <span className="text-slate-500 dark:text-slate-400">
+                          {/* {property.beds} beds
+                        </span>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          {property.baths} baths
+                        </span>
+                        <span className="text-slate-500 dark:text-slate-400">
+                          {property.sqft} sqft */}
+                        </span>
+                      </div>
+                      <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">
+                        ${property.description}
+                      </p>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
       </div>
     </div>
