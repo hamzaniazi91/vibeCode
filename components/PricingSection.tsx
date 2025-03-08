@@ -1,15 +1,9 @@
 // File: /components/PricingSection.tsx
 
-// import Link from 'next/link';
-// import { StripeBuyButton } from './StripeBuyButton';
 import { motion } from 'framer-motion';
 import { CheckCircle2 } from 'lucide-react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-// interface PricingSectionProps {
-//   showFullDetails?: boolean;
-// }
 
 const pricingTiers = [
   {
@@ -86,8 +80,8 @@ export function PricingSection() {
           onClick={() => handleTierClick(tier.id)}
           className={`relative rounded-2xl p-8 shadow-lg cursor-pointer transition-all duration-300 ${
             selectedTier === tier.id
-              ? 'bg-primary/5 dark:bg-primary/10 ring-2 ring-primary transform scale-105'
-              : 'bg-white dark:bg-slate-800 ring-1 ring-slate-200 dark:ring-slate-700 hover:ring-primary/50'
+              ? 'bg-primary/5 ring-2 ring-primary transform scale-105'
+              : 'bg-white ring-1 ring-slate-200 hover:ring-primary/50'
           }`}
         >
           {/* Show Popular badge only for Enterprise tier */}
@@ -96,17 +90,17 @@ export function PricingSection() {
               Popular
             </span>
           )}
-          <h3 className="text-xl font-semibold text-slate-900 dark:text-white">{tier.name}</h3>
+          <h3 className="text-xl font-semibold text-slate-900">{tier.name}</h3>
           <div className="mt-4 flex items-baseline">
-            <span className="text-4xl font-bold text-slate-900 dark:text-white">{tier.price}</span>
-            <span className="ml-1 text-slate-500 dark:text-slate-400">{tier.interval}</span>
+            <span className="text-4xl font-bold text-slate-900">{tier.price}</span>
+            <span className="ml-1 text-slate-500">{tier.interval}</span>
           </div>
-          <p className="mt-4 text-slate-500 dark:text-slate-400">{tier.description}</p>
+          <p className="mt-4 text-slate-500">{tier.description}</p>
           <ul className="mt-8 space-y-4">
             {tier.features.map((feature) => (
               <li key={feature} className="flex items-center">
                 <CheckCircle2 className="h-5 w-5 text-primary mr-3" />
-                <span className="text-slate-600 dark:text-slate-300">{feature}</span>
+                <span className="text-slate-600">{feature}</span>
               </li>
             ))}
           </ul>
@@ -117,7 +111,7 @@ export function PricingSection() {
             className={`mt-8 w-full py-3 px-4 rounded-lg text-center font-medium transition-colors ${
               selectedTier === tier.id
                 ? 'bg-primary text-white hover:bg-primary-dark'
-                : 'bg-slate-100 dark:bg-slate-700 text-slate-900 dark:text-white hover:bg-slate-200 dark:hover:bg-slate-600'
+                : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
             }`}
           >
             {tier.cta}
