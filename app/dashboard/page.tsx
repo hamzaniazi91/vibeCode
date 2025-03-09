@@ -234,6 +234,8 @@ export default function Dashboard() {
     }
   };
 
+  
+
   useEffect(() => {
     fetchRecentProperties();
   }, []);
