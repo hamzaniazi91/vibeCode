@@ -182,11 +182,14 @@ export default function Dashboard() {
     if (user?.id) {
       const getCount = async () => {
         try {
+          // Use select with count option instead of .count()
           const { data, error } = await supabase
             .from('properties')
-            .count('*', { where: { user_id: user.id } });
+            .select('*', { count: 'exact' }) // Specify count option
+            .eq('user_id', user.id);         // Filter by user ID
+
           if (!error && data) {
-            setPropertyCount(data[0].count);
+            setPropertyCount(data.count);     // Access count directly
           }
         } catch (error) {
           console.error("Error fetching property count:", error);
