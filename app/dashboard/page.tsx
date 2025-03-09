@@ -1,15 +1,12 @@
 "use client";
 
-// import { useWebSocket } from '@/contexts/WebSocketContext';
 import { useEffect, useState } from 'react';
 import { useSupabaseClient } from '@supabase/auth-helpers-react';
 import { supabase } from '@/utils/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 
-
 import { useRouter } from 'next/navigation';
 import { useSubscription } from '@/hooks/useSubscription';
-// import { OnboardingTour } from '@/components/OnboardingTour';
 import { useTrialStatus } from '@/hooks/useTrialStatus';
 import { motion } from 'framer-motion';
 import { 
@@ -45,7 +42,7 @@ const dashboardMetrics = [
     title: "Active Sessions",
     value: "432",
     change: "-3.1%",
-    icon: <Activity className="h-6 w-6 text-primary" />,
+    icon: <Activity className="h-4 w-4" />,
     trend: "down"
   },
   {
@@ -86,15 +83,13 @@ const recentActivity = [
 ];
 
 export default function Dashboard() {
-
   
-  // const { isConnected } = useWebSocket();
-  // const [fullResponse, setFullResponse] = useState('');
   const { user, isSubscriber, isLoading: isAuthLoading } = useAuth();
   const router = useRouter();
   const { subscription, isLoading: isSubLoading, fetchSubscription } = useSubscription();
   const [hasCheckedSubscription, setHasCheckedSubscription] = useState(false);
   const [hasCompletedOnboarding, setHasCompletedOnboarding] = useState(false);
+
   interface PropertyData {
     id: string;
     title: string;
@@ -105,14 +100,8 @@ export default function Dashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const { isInTrial, isLoading: isTrialLoading } = useTrialStatus();
   const [authTimeout, setAuthTimeout] = useState(false);
+  const [propertyCount, setPropertyCount] = useState(0);
 
-  // Add new states for dashboard functionality
-  // const [repositories, setRepositories] = useState([]);
-  // const [feedbackSources, setFeedbackSources] = useState([]);
-  // const [recentFeedback, setRecentFeedback] = useState([]);
-  // const [pendingPRs, setPendingPRs] = useState([]);
-
-  // First check - Subscription and trial check
   useEffect(() => {
     if (isSubLoading || isTrialLoading) return;
     
@@ -125,14 +114,12 @@ export default function Dashboard() {
       validUntil: subscription?.current_period_end
     });
 
-    // Only redirect if there's no valid subscription AND no valid trial
     if (!hasValidSubscription && !isInTrial) {
       console.log('No valid subscription or trial, redirecting');
       router.replace('/profile');
     }
   }, [subscription, isSubLoading, isTrialLoading, router, isInTrial]);
 
-  // Second check - Auth check
   useEffect(() => {
     if (isAuthLoading || isTrialLoading) return;
 
@@ -146,7 +133,6 @@ export default function Dashboard() {
     if (!hasCheckedSubscription) {
       setHasCheckedSubscription(true);
       
-      // Allow access for both subscribers and trial users
       if (!user || (!isSubscriber && !isInTrial && !isAuthLoading)) {
         console.log('No valid subscription or trial, redirecting');
         router.replace('/profile');
@@ -154,7 +140,6 @@ export default function Dashboard() {
     }
   }, [isSubscriber, isAuthLoading, hasCheckedSubscription, router, user, subscription, isTrialLoading, isInTrial]);
 
-  // Add refresh effect
   useEffect(() => {
     const refreshSubscription = async () => {
       await fetchSubscription();
@@ -168,7 +153,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (user?.id) {
-      // Check if user has completed onboarding
       const checkOnboarding = async () => {
         const { data } = await supabase
           .from('user_preferences')
@@ -194,17 +178,26 @@ export default function Dashboard() {
     return () => clearTimeout(timer);
   }, [user, isAuthLoading, isTrialLoading]);
 
-  // useEffect(() => {
-  //   if (!hasCompletedOnboarding) {
-  //     router.push('/onboarding');
-  //   }
-  // }, [hasCompletedOnboarding, router]);
+  useEffect(() => {
+    if (user?.id) {
+      const getCount = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('properties')
+            .count('*', { where: { user_id: user.id } });
+          if (!error && data) {
+            setPropertyCount(data[0].count);
+          }
+        } catch (error) {
+          console.error("Error fetching property count:", error);
+        }
+      };
+      getCount();
+    }
+  }, [user.id, supabase]);
 
-  // Fetch recent properties
   const fetchRecentProperties = async () => {
     try {
-      
-      // Get recent properties, ordered by created_at
       const { data: propertiesData, error } = await supabase
         .from('properties')
         .select('id, title, description')
@@ -234,17 +227,11 @@ export default function Dashboard() {
     }
   };
 
-  
-
   useEffect(() => {
     fetchRecentProperties();
   }, []);
 
-  // Update the loading check
   if (!user && (isAuthLoading || isTrialLoading) && !hasCheckedSubscription) {
-    console.log('user: ', user)
-    console.log('isAuthLoading: ', isAuthLoading)
-    console.log('hasCheckedSubscription: ', hasCheckedSubscription)
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -259,6 +246,16 @@ export default function Dashboard() {
     );
   }
 
+  const allMetrics = [
+    ...dashboardMetrics,
+    {
+      title: "Properties",
+      value: propertyCount.toString(),
+      change: "",
+      icon: <PlusCircle className="h-6 w-6 text-primary" />,
+      trend: "up"
+    }
+  ];
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
@@ -282,7 +279,7 @@ export default function Dashboard() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Metrics Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          {dashboardMetrics.map((metric, index) => (
+          {allMetrics.map((metric, index) => (
             <motion.div
               key={metric.title}
               initial={{ opacity: 0, y: 20 }}
@@ -386,15 +383,7 @@ export default function Dashboard() {
                         {property.title}
                       </p>
                       <div className="flex items-center space-x-2 text-xs">
-                        <span className="text-slate-500 dark:text-slate-400">
-                          {/* {property.beds} beds
-                        </span>
-                        <span className="text-slate-500 dark:text-slate-400">
-                          {property.baths} baths
-                        </span>
-                        <span className="text-slate-500 dark:text-slate-400">
-                          {property.sqft} sqft */}
-                        </span>
+                        {/* ... */}
                       </div>
                       <p className="text-slate-500 dark:text-slate-400 text-xs mt-1">
                         ${property.description}
