@@ -141,12 +141,12 @@ export default function Dashboard() {
   }, [isSubscriber, isAuthLoading, hasCheckedSubscription, router, user, subscription, isTrialLoading, isInTrial]);
 
   useEffect(() => {
-    const refreshSubscription = async () => {
-      await fetchSubscription();
-      setHasCheckedSubscription(true);
-    };
-    
     if (user?.id) {
+      const refreshSubscription = async () => {
+        await fetchSubscription();
+        setHasCheckedSubscription(true);
+      };
+      
       refreshSubscription();
     }
   }, [user?.id, fetchSubscription]);
@@ -182,14 +182,13 @@ export default function Dashboard() {
     if (user?.id) {
       const getCount = async () => {
         try {
-          // Use select with count option instead of .count()
-          const { data, error } = await supabase
-            .from('properties')
-            .select('*', { count: 'exact' }) // Specify count option
-            .eq('user_id', user.id);         // Filter by user ID
+          // Use the correct count() method with a where clause
+          const { data } = await supabase.from('properties').count('*', 
+            [ where: 'user_id', '=', user.id ] // Adjust syntax based on Supabase version
+          );
 
-          if (!error && data) {
-            setPropertyCount(data.count);     // Access count directly
+          if (data) {
+            setPropertyCount(data[0].count); // Access the count
           }
         } catch (error) {
           console.error("Error fetching property count:", error);
@@ -253,7 +252,7 @@ export default function Dashboard() {
     ...dashboardMetrics,
     {
       title: "Properties",
-      value: propertyCount.toString(),
+      value: propertyCount?.toString() || '0', // Fallback to '0' if undefined
       change: "",
       icon: <PlusCircle className="h-6 w-6 text-primary" />,
       trend: "up"
