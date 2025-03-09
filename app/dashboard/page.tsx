@@ -141,12 +141,12 @@ export default function Dashboard() {
   }, [isSubscriber, isAuthLoading, hasCheckedSubscription, router, user, subscription, isTrialLoading, isInTrial]);
 
   useEffect(() => {
+    const refreshSubscription = async () => {
+      await fetchSubscription();
+      setHasCheckedSubscription(true);
+    };
+    
     if (user?.id) {
-      const refreshSubscription = async () => {
-        await fetchSubscription();
-        setHasCheckedSubscription(true);
-      };
-      
       refreshSubscription();
     }
   }, [user?.id, fetchSubscription]);
@@ -179,16 +179,18 @@ export default function Dashboard() {
   }, [user, isAuthLoading, isTrialLoading]);
 
   useEffect(() => {
+    console.log("user", user?.id)
     if (user?.id) {
       const getCount = async () => {
         try {
-          // Use the correct count() method with a where clause
-          const { data } = await supabase.from('properties').count('*', 
-            [ where: 'user_id', '=', user.id ] // Adjust syntax based on Supabase version
-          );
-
-          if (data) {
-            setPropertyCount(data[0].count); // Access the count
+          const { data, error } = await supabase
+            .from('properties')
+            .select('*', { count: 'exact' })
+            
+            console.log("data", data)
+          if (!error && data) {
+            
+            setPropertyCount(data.length);
           }
         } catch (error) {
           console.error("Error fetching property count:", error);
@@ -196,7 +198,7 @@ export default function Dashboard() {
       };
       getCount();
     }
-  }, [user.id, supabase]);
+  }, [user?.id, supabase]);
 
   const fetchRecentProperties = async () => {
     try {
@@ -252,7 +254,7 @@ export default function Dashboard() {
     ...dashboardMetrics,
     {
       title: "Properties",
-      value: propertyCount?.toString() || '0', // Fallback to '0' if undefined
+      value: propertyCount.toString(),
       change: "",
       icon: <PlusCircle className="h-6 w-6 text-primary" />,
       trend: "up"
