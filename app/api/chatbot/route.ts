@@ -22,13 +22,10 @@ export async function POST(request: Request) {
       );
     }
 
-    // Extract user ID from the phone number
-    const userId = From.replace('+', '');
-
     // Fetch property details based on the inquiry
     const { data: properties, error: propertiesError } = await supabase
       .from('properties')
-      .select('id, title, amenities, location');
+      .select('id, title, amenities, location, price');
 
     if (propertiesError) {
       logger.error('Error fetching properties:', propertiesError);
@@ -41,11 +38,10 @@ export async function POST(request: Request) {
     // Generate a response based on the inquiry
     const response = generateResponse(Body, properties);
 
-
     // Send the response back to the user
     const twilioResponse = await client.messages.create({
-      to: 'whatsapp:+447488529057',
-      from: 'whatsapp:+14155238886',
+      to: From,
+      from: process.env.TWILIO_WHATSAPP_NUMBER,
       body: response,
     });
 
