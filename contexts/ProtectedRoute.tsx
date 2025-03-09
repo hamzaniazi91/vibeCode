@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import {usePathname } from 'next/navigation';
-// import { useRouter, usePathname } from 'next/navigation';
 
 // List of public routes that don't require authentication
 const PUBLIC_ROUTES = [
@@ -12,12 +11,12 @@ const PUBLIC_ROUTES = [
   '/signup', 
   '/verify-email', 
   '/reset-password', 
-  '/update-password'
+  '/update-password',
+  '/chat' // Include the chat route
 ];
 
 export default function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { user, isLoading } = useAuth();
-  // const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
@@ -43,4 +42,4 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   }
 
   return null;
-} 
+}

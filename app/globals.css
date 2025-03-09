@@ -90,3 +90,16 @@ body {
      opacity: 0.7;
    }
 }
+
+/* Chat UI styles */
+.chat-window {
+  height: 60vh;
+}
+
+.message-user {
+  background-color: #d1eaff !important;
+}
+
+.message-bot {
+  background-color: #f5f5f5 !important;
+}

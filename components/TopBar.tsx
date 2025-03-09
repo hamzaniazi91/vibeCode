@@ -6,7 +6,6 @@ import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTrialStatus } from '@/hooks/useTrialStatus';
-// import { supabase } from '@/utils/supabase';
 
 // TopBar component handles user profile display and navigation
 export default function TopBar() {
@@ -56,8 +55,6 @@ export default function TopBar() {
           <span className="font-sans">LetEase</span>
         </Link>
 
-        
-
         <div className="flex items-center gap-4">
           {!user ? (
             // Show login button for unauthenticated users
@@ -94,6 +91,13 @@ export default function TopBar() {
                 </button>
               )}
               
+              <Link
+                href="/chat"
+                className="hidden sm:block bg-primary hover:bg-primary-dark text-white px-3 sm:px-4 py-1 sm:py-2 rounded-lg transition-colors text-sm sm:text-base"
+              >
+                Chat
+              </Link>
+
               <div className="relative" ref={dropdownRef}>
                 <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
@@ -133,4 +137,4 @@ export default function TopBar() {
       </div>
     </div>
   );
-} 
+}
