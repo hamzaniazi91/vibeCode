@@ -73,3 +73,7 @@ logs
 .cache/
 .next/cache/
 .aider*
+
+
+# Memory bank
+memory-bank/
