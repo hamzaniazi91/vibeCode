@@ -7,14 +7,14 @@ import { PricingSection } from '@/components/PricingSection';
 import { TypewriterEffect } from '@/components/TypewriterEffect';
 import { FaMobile, FaLaptop, FaCode } from 'react-icons/fa6';
 import { useTrialStatus } from '@/hooks/useTrialStatus';
-import  HouseScene  from '@/components/HouseScene';
-import  Logo from '@/components/House';
+import HouseScene from '@/components/HouseScene';
+import Logo from '@/components/House';
 
 
-import { 
+import {
   Lock, CreditCard, Moon
 } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,9 +22,9 @@ import { Link as ScrollLink } from 'react-scroll';
 import { VideoModal } from '@/components/VideoModal';
 
 import { FaReddit } from 'react-icons/fa';
-import { 
-  FaGithub, 
-  FaDiscord, 
+import {
+  FaGithub,
+  FaDiscord,
   FaProductHunt,
   FaXTwitter,
   FaHackerNews,
@@ -34,7 +34,7 @@ import {
   FaBuilding,
   FaUserCheck,
   FaDollarSign,
-  
+
 } from 'react-icons/fa6';
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -127,8 +127,8 @@ const workflowSections = [
 // Custom Hook to create section progress values
 function useSectionProgressValues(numSections: number) {
   const { scrollYProgress } = useScroll();
-  
-  
+
+
   // Create all transforms at once, at the top level
   const section1Progress = useTransform(
     scrollYProgress,
@@ -183,7 +183,7 @@ export default function LandingPage() {
   const [hovered, setHovered] = useState<boolean>(false);
 
   const sectionProgressValues = useSectionProgressValues(workflowSections.length);
-  
+
   const router = useRouter();
 
   const [dashboardRef, inView] = useInView({
@@ -196,7 +196,9 @@ export default function LandingPage() {
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120] relative">
+    <div className="min-h-screen bg-slate-50 dark:bg-surface-dark   relative">
+      
+      
       {/* Enhanced Sticky Navigation */}
       <nav className="sticky top-0 z-50 bg-white/80 dark:bg-neutral-darker/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -213,20 +215,20 @@ export default function LandingPage() {
                 className={`flex items-center cursor-pointer group min-w-fit mx-4 first:ml-0 last:mr-0`}
               >
                 <div className="relative">
-                  <span 
+                  <span
                     className={`w-8 h-8 rounded-full flex items-center justify-center mr-2 transition-all duration-300
-                      ${activeSection === section.id 
-                      ? 'bg-primary dark:bg-primary-light text-white' 
-                      : 'bg-primary/10 dark:bg-primary-light/10 text-primary dark:text-primary-light group-hover:bg-primary/20 dark:group-hover:bg-primary-light/20'}`}
+                      ${activeSection === section.id
+                        ? 'bg-primary dark:bg-primary-light text-white'
+                        : 'bg-primary/10 dark:bg-primary-light/10 text-primary dark:text-primary-light group-hover:bg-primary/20 dark:group-hover:bg-primary-light/20'}`}
                   >
                     {index + 1}
                   </span>
                 </div>
-                <span 
+                <span
                   className={`text-sm font-medium transition-colors duration-300 hidden md:block whitespace-nowrap
-                    ${activeSection === section.id 
-                    ? 'text-primary dark:text-primary-light' 
-                    : 'text-slate-600 dark:text-slate-300 group-hover:text-primary dark:group-hover:text-primary-light'}`}
+                    ${activeSection === section.id
+                      ? 'text-primary dark:text-primary-light'
+                      : 'text-slate-600 dark:text-slate-300 group-hover:text-primary dark:group-hover:text-primary-light'}`}
                 >
                   {section.title}
                 </span>
@@ -235,19 +237,19 @@ export default function LandingPage() {
           </div>
         </div>
       </nav>
-
+     
 
       {/* Hero Section - Now acts as Overview */}
       <div id="overview" className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-primary-light/10 to-accent-light/10" />
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className=" pb-16 sm:pb-24">
+          <div className="relative  pb-16 sm:pb-24">
             {/* Header Content */}
             <div className="text-center">
-            <div className="flex justify-center">
-        <Logo />
-      </div>
+              <div className="flex justify-center">
+                <Logo />
+              </div>
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-900 dark:text-white">
                 <span className="block">Modern Rental Property Management</span>
                 <span className="block text-primary dark:text-primary-light">For Landlords & Property Managers</span>
@@ -255,7 +257,7 @@ export default function LandingPage() {
               <p className="mt-6 max-w-2xl mx-auto text-lg text-slate-600 dark:text-slate-300">
                 Manage your rental properties from listings to lease agreements in one platform.
               </p>
-              
+
               {/* CTA Buttons */}
               <div className="mt-10 flex gap-4 justify-center">
                 <motion.button
@@ -266,8 +268,8 @@ export default function LandingPage() {
                 >
                   Watch Demo
                 </motion.button>
-                <button 
-                  onClick={() => router.push('/dashboard')} 
+                <button
+                  onClick={() => router.push('/dashboard')}
                   className="px-8 py-3 bg-white dark:bg-neutral-dark hover:bg-slate-50 dark:hover:bg-neutral-darker text-primary dark:text-primary-light border-2 border-primary dark:border-primary-light rounded-lg shadow-lg hover:shadow-xl transition-all"
                 >
                   Start Free Trial
@@ -279,21 +281,12 @@ export default function LandingPage() {
             <div className="mt-16 grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Code Preview */}
               <div className="relative">
-                <pre className="relative rounded-xl bg-slate-900 p-8 shadow-2xl">
-                  <code className="text-sm sm:text-base text-slate-100">
-      
-                    <TypewriterEffect text={`// Manage Your Rentals
-import { Property, Tenant } from 'rental-platform';
-
-const myProperty = new Property({
-  address: "123 Main St",
-  rent: "$2500/month",
-  tenants: [new Tenant({ name: "John Doe" })]
-});
-
-myProperty.generateLeaseAgreement(); // Auto-generates PDF
-`} />
-                  </code>
+                <pre className="relative rounded-xl bg-white p-8 shadow-2xl">
+                  <img
+                    src="/letease.png"
+                    alt="Smiling elderly couple on a porch"
+                    className="w-full h-96 object-cover rounded-lg mt-8 mb-12"
+                  />
                 </pre>
               </div>
 
@@ -380,7 +373,7 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative bg-white dark:bg-neutral-dark rounded-xl shadow-xl p-12 border border-slate-200 dark:border-slate-700">
             <div className="text-center">
-              <motion.h2 
+              <motion.h2
                 initial={{ y: 20 }}
                 whileInView={{ y: 0 }}
                 className="text-3xl font-bold text-slate-900 dark:text-white"
@@ -390,7 +383,7 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
               <p className="mt-4 text-lg text-slate-600 dark:text-slate-300">
                 Start using our product today
               </p>
-              
+
               <div className="mt-10 flex gap-4 justify-center">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -400,7 +393,7 @@ myProperty.generateLeaseAgreement(); // Auto-generates PDF
                 >
                   Watch Demo
                 </motion.button>
-                <motion.button 
+                <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/dashboard')}

@@ -103,3 +103,10 @@ body {
 .message-bot {
   background-color: #f5f5f5 !important;
 }
+
+.container {
+  width: 150px;
+  height: 150px;
+  background-image: url("https://framerusercontent.com/images/M4SNURkNYCDjIiopKdiL689jOQ.svg");
+  border-radius: 30px;
+}

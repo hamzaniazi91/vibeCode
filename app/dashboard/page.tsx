@@ -8,7 +8,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useSubscription } from '@/hooks/useSubscription';
 import { useTrialStatus } from '@/hooks/useTrialStatus';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { 
   BarChart3, 
   Users, 
@@ -262,7 +262,7 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-[#0B1120]">
+    <div className="min-h-screen bg-slate-50 dark:bg-surface-dark">
       {/* Dashboard Header */}
       <div className="bg-white dark:bg-neutral-dark border-b border-slate-200 dark:border-slate-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">

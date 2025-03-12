@@ -20,7 +20,7 @@ import {
 import { 
  Lock, CreditCard, Moon
 } from 'lucide-react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
